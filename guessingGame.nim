@@ -4,8 +4,13 @@ import nigui
 
 # Variable Setup
 
-var randomNum: int = rand(1..100)
+let randomNum: int = rand(100)
+doAssert randomNum in 0..100
 var guessCount: int = 0
+# Not a great way to do it, but I don't know how to otherwise.
+var numbers: array = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
+var inputIsNum: bool = false
+var hasInput: bool = false
 
 # GUI Setup
 
@@ -34,8 +39,33 @@ inputContainer.add(applyGuessButton)
 var infoLabel = newLabel()
 rootContainer.add(infoLabel)
 
+proc gameWon() =
+    guessTextArea.hide()
+    applyGuessButton.hide()
+    var restartButton = newButton("Quit")
+    inputContainer.add(restartButton)
+    restartButton.focus()
+
+    restartButton.onClick = proc(event: ClickEvent) =
+        app.quit()
+
 proc applyTurn() =
-    if (guessTextArea.text != ""):
+
+    # Main problem with this is it doesn't know when a letter is with a number. It sees the string has a number and accepts it, causing an error.
+    for letter in numbers:
+        if (guessTextArea.text != ""):
+            hasInput = true
+            echo "has input"
+            if (guessTextArea.text.contains(letter)):
+                inputIsNum = true
+                echo "true"
+                break
+            elif (guessTextArea.text.contains(letter) == false):
+                inputIsNum = false
+                echo letter
+
+    guessTextArea.focus()
+    if (inputIsNum and hasInput):
         guessCount += 1
         var countText: string
         if (guessTextArea.text.parseInt() > randomNum):
@@ -52,15 +82,19 @@ proc applyTurn() =
             else:
                 pluralText = " time!"
             infoLabel.text = "Well done! You guessed " & $guessCount & pluralText
+            gameWon()
+    elif (hasInput == false):
+        mainWindow.alert("Enter a number")
+    elif (inputIsNum == false):
+        mainWindow.alert("Only numbers are allowed")
     guessTextArea.text = ""
-    guessTextArea.focus()
+    hasInput = false
 
 applyGuessButton.onClick = proc(event: ClickEvent) = applyTurn()
 
 guessTextArea.onKeyDown = proc(event: KeyboardEvent) = 
     if event.key == Key_Return:
         applyTurn()
-
 
 mainWindow.show()
 guessTextArea.focus()
