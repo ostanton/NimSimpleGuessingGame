@@ -8,3 +8,5 @@ A very simple number guessing game written in Nim using NiGui. I started learnin
 Please report any more bugs!
 
 There are may ways to improve this I know, but it's my first GUI application outside Unreal Engine, and my first proper code application, so cut me some slack!
+
+If you want to compile it yourself, you need NiGui, found here - https://github.com/simonkrauter/NiGui (sadly there is no documentation I could find except examples)
