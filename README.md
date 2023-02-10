@@ -6,3 +6,5 @@ A very simple number guessing game written in Nim using NiGui. I started learnin
 - Scrolling scrolls the whole window contents instead of submitted answers. There is no documentation of NiGui yet so I have no idea how to change this.
 
 Please report any more bugs!
+
+There are may ways to improve this I know, but it's my first GUI application outside Unreal Engine, and my first proper code application, so cut me some slack!
