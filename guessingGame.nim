@@ -49,6 +49,14 @@ proc gameWon() =
     restartButton.onClick = proc(event: ClickEvent) =
         app.quit()
 
+# Made by ChatGPT
+
+proc isNumeric(s: string): bool =
+    for c in s:
+        if not c.isDigit:
+            return false
+    return s.len > 0
+
 proc applyTurn() =
 
     # Main problem with this is it doesn't know when a letter is with a number. It sees the string has a number and accepts it, causing an error.
@@ -65,7 +73,7 @@ proc applyTurn() =
                 echo letter
 
     guessTextArea.focus()
-    if (inputIsNum and hasInput):
+    if (isNumeric(guessTextArea.text) and hasInput):
         guessCount += 1
         var countText: string
         if (guessTextArea.text.parseInt() > randomNum):
@@ -85,7 +93,7 @@ proc applyTurn() =
             gameWon()
     elif (hasInput == false):
         mainWindow.alert("Enter a number")
-    elif (inputIsNum == false):
+    elif (isNumeric(guessTextArea.text) == false):
         mainWindow.alert("Only numbers are allowed")
     guessTextArea.text = ""
     hasInput = false
